@@ -93,9 +93,15 @@ function extractData(files) {
 		var r = _cell.attr('r').value(),
 			type = (_cell.attr('t') || na).value(),
 			value = ( _cell.get('a:v', ns) || na ).text(),
-			cell = new Cell(r);
+			cell = new Cell(r),
+      text;
 
-		if (type == 's') value = strings.get('//a:si[' + (parseInt(value) + 1) + ']//a:t', ns).text();
+		if (type == 's'){
+      text = strings.find('//a:si[' + (parseInt(value) + 1) + ']//a:t', ns);
+      value = _.map(string, function(s){
+        return s.text();
+      }).join('');
+    }
 
 		data[cell.row - d[0].row][cell.column - d[0].column] = value;
 	});
